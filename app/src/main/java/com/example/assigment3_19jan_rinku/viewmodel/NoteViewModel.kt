@@ -1,7 +1,8 @@
-package com.example.assigment3_19jan_rinku
+package com.example.assigment3_19jan_rinku.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.example.assigment3_19jan_rinku.model.Note
+import kotlin.collections.forEach
 
 class NoteViewModel : ViewModel() {
 
@@ -31,6 +32,10 @@ class NoteViewModel : ViewModel() {
                 listNotes[it.id!!] = note
             }
         }
+    }
+
+    fun delete(note: Note){
+        listNotes.remove(note)
     }
 
 }

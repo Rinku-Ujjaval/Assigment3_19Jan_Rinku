@@ -1,10 +1,11 @@
-package com.example.assigment3_19jan_rinku
+package com.example.assigment3_19jan_rinku.composable
 
 import android.annotation.SuppressLint
 import android.graphics.Color
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -27,6 +28,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.example.assigment3_19jan_rinku.model.Note
+import com.example.assigment3_19jan_rinku.viewmodel.NoteViewModel
+import kotlin.text.isNullOrEmpty
+import kotlin.toString
 
 @SuppressLint("RememberReturnType")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -61,10 +65,11 @@ fun AddListNote(
         )
     }) { innerPadding ->
         Column(
-            Modifier
+            modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding), Arrangement.Center,
-            Alignment.CenterHorizontally
+                .padding(innerPadding),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Card(
                 colors = CardDefaults.cardColors(
@@ -97,28 +102,35 @@ fun AddListNote(
                             content.value = it
                         })
                     Spacer(modifier = Modifier.height(10.dp))
-                    Button(
-                        onClick = {
-                            if (name == "Add Note") {
-                                noteViewModel.addNote(
-                                    title.value.text.toString(),
-                                    content.value.text.toString()
-                                )
-                            } else {
-                                noteViewModel.updateNote(
-                                    Note(
-                                        item?.id,
+                    Row {
+                        Button(
+                            onClick = {
+                                if (name == "Add Note") {
+                                    noteViewModel.addNote(
                                         title.value.text.toString(),
                                         content.value.text.toString()
                                     )
-                                )
-                            }
-                            noteList()
-                        }, modifier = Modifier
-                            .width(100.dp)
-                            .height(50.dp)
-                    ) {
-                        Text("Save")
+                                } else {
+                                    noteViewModel.updateNote(
+                                        Note(
+                                            item?.id,
+                                            title.value.text.toString(),
+                                            content.value.text.toString()
+                                        )
+                                    )
+                                }
+                                noteList()
+                            }, modifier = Modifier
+                                .width(100.dp)
+                                .height(50.dp)
+                        ) {
+                            Text("Save")
+                        }
+                        Button(onClick = {
+                            noteViewModel.delete(item!!)
+                        }) {
+                            Text("Delete")
+                        }
                     }
                 }
             }
